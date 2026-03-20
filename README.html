@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Eid Mubarak | Abdur Rehman | 3D Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Times New Roman', serif;
+            background: #03030f;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Main Overlay - Enhanced styling */
+        .hero-overlay {
+            position: absolute;
+            bottom: 10%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+            padding: 0 20px;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        /* Big, stylish Eid Mubarak */
+        .eid-title {
+            font-size: clamp(3.5rem, 12vw, 7rem);
+            font-weight: 800;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f9e0a0, #f7c56e, #ffeaac, #e6b450);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 30px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            animation: titleGlow 2.5s ease-in-out infinite;
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        /* Decorative underline */
+        .title-underline {
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #f7c56e, #ffeaac, #f7c56e, transparent);
+            margin: 10px auto;
+            border-radius: 4px;
+            animation: underlinePulse 2s ease infinite;
+        }
+
+        /* "from Abdur Rehman" with enhanced size and color */
+        .from-line {
+            font-size: clamp(1.6rem, 6vw, 2.6rem);
+            font-weight: 700;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(120deg, #fff0cf, #ffdd99);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            letter-spacing: 2px;
+        }
+
+        .from-line span {
+            font-size: 1.2em;
+            background: none;
+            color: #ffdd99;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* ABDUR REHMAN - LARGER, CLEARER, RICH COLOR */
+        .name-highlight {
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffdd99, #ffcc66, #ffb347);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: clamp(2.2rem, 8vw, 3.8rem);
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(255, 180, 70, 0.8);
+            animation: nameGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes nameGlow {
+            0% { text-shadow: 0 0 20px rgba(255, 180, 70, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(255, 200, 100, 0.9); }
+            100% { text-shadow: 0 0 20px rgba(255, 180, 70, 0.5); }
+        }
+
+        /* Urdu Text - enhanced */
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', 'Traditional Arabic', 'Times New Roman', serif;
+            font-size: clamp(1.6rem, 6vw, 2.4rem);
+            color: #ffefcf;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            display: inline-block;
+            padding: 10px 32px;
+            border-radius: 80px;
+            margin-top: 15px;
+            letter-spacing: 2px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 215, 150, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .blessing-message {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            color: #fff0cf;
+            margin-top: 25px;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(10px);
+            display: inline-block;
+            padding: 8px 28px;
+            border-radius: 50px;
+            letter-spacing: 0.8px;
+        }
+
+        /* Floating Icons */
+        .floating-icon {
+            position: absolute;
+            font-size: clamp(2rem, 7vw, 3.5rem);
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));
+            animation: floatNew 7s ease-in-out infinite;
+        }
+
+        .icon-1 { top: 10%; left: 2%; animation-duration: 8s; }
+        .icon-2 { bottom: 12%; right: 3%; animation-duration: 10s; animation-delay: 1s; }
+        .icon-3 { top: 20%; right: 5%; animation-duration: 9s; animation-delay: 0.5s; }
+        .icon-4 { bottom: 18%; left: 4%; animation-duration: 11s; }
+
+        .gradient-mask {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(3, 3, 15, 0.8), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(60px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px rgba(0,0,0,0.4); }
+            50% { text-shadow: 0 0 40px rgba(255,215,0,0.5), 0 0 20px rgba(255,200,0,0.3); }
+            100% { text-shadow: 0 0 20px rgba(0,0,0,0.4); }
+        }
+
+        @keyframes underlinePulse {
+            0% { opacity: 0.5; width: 60%; }
+            50% { opacity: 1; width: 80%; }
+            100% { opacity: 0.5; width: 60%; }
+        }
+
+        @keyframes floatNew {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(8deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Mobile professional touch */
+        @media (max-width: 640px) {
+            .hero-overlay { bottom: 5%; }
+            .urdu-text { padding: 6px 20px; backdrop-filter: blur(12px); font-size: 1.4rem; }
+            .blessing-message { margin-top: 15px; font-size: 0.85rem; padding: 6px 18px; }
+            .from-line { gap: 8px; }
+            .name-highlight { letter-spacing: 2px; }
+        }
+
+        @media (max-width: 480px) {
+            .eid-title { margin-bottom: 10px; }
+            .from-line { margin: 8px 0; }
+            .name-highlight { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+        }
+
+        @media (max-width: 850px) and (orientation: landscape) {
+            .hero-overlay { bottom: 2%; }
+            .eid-title { margin-bottom: 5px; font-size: clamp(2rem, 8vw, 4rem); }
+            .urdu-text { padding: 4px 16px; font-size: 1.2rem; }
+            .blessing-message { margin-top: 8px; }
+        }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="floating-icon icon-1">🌙✨</div>
+    <div class="floating-icon icon-2">⭐☪️</div>
+    <div class="floating-icon icon-3">🕌🌟</div>
+    <div class="floating-icon icon-4">🏮🌙</div>
+    
+    <div class="gradient-mask"></div>
+    
+    <div class="hero-overlay">
+        <div class="eid-title">Eid Mubarak</div>
+        <div class="title-underline"></div>
+        <div class="from-line">
+            <span>✨ from</span>
+            <span class="name-highlight">Abdur Rehman</span>
+            <span>✨</span>
+        </div>
+        <div class="urdu-text">عید مبارک — عبدالرحمن کی طرف سے</div>
+        <div class="blessing-message">🕊️ May this blessed Eid bring you endless joy, peace & divine light 🕊️</div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        
+        // Setup Scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x03030f);
+        scene.fog = new THREE.FogExp2(0x03030f, 0.004);
+        
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2.2, 11);
+        camera.lookAt(0, 1.5, 0);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        document.body.appendChild(renderer.domElement);
+        
+        // Bloom
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.9, 0.35, 0.75);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 0.6;
+        bloomPass.radius = 0.45;
+        const effectComposer = new EffectComposer(renderer);
+        effectComposer.addPass(renderScene);
+        effectComposer.addPass(bloomPass);
+        
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.enablePan = false;
+        controls.zoomSpeed = 0.5;
+        controls.rotateSpeed = 0.7;
+        controls.target.set(0, 1.6, 0);
+        
+        // Lighting (softer, warm)
+        const ambient = new THREE.AmbientLight(0x332011, 0.5);
+        scene.add(ambient);
+        const keyLight = new THREE.DirectionalLight(0xffdd99, 0.95);
+        keyLight.position.set(3, 5, 2.5);
+        scene.add(keyLight);
+        const fillWarm = new THREE.PointLight(0xe6b85e, 0.55);
+        fillWarm.position.set(1, 1.5, 2);
+        scene.add(fillWarm);
+        const rimLight = new THREE.PointLight(0xffaa66, 0.65);
+        rimLight.position.set(-2, 2.5, -3);
+        scene.add(rimLight);
+        
+        // Dynamic lights
+        const dynamicLight1 = new THREE.PointLight(0xff88aa, 0.45);
+        const dynamicLight2 = new THREE.PointLight(0x88aaff, 0.45);
+        const dynamicLight3 = new THREE.PointLight(0xffaa66, 0.5);
+        scene.add(dynamicLight1);
+        scene.add(dynamicLight2);
+        scene.add(dynamicLight3);
+        
+        // Crescent Moon
+        const moonGroup = new THREE.Group();
+        const coreMoon = new THREE.Mesh(
+            new THREE.SphereGeometry(0.74, 96, 96),
+            new THREE.MeshStandardMaterial({ color: 0xffe4a3, emissive: 0xaa7733, emissiveIntensity: 0.28, metalness: 0.6, roughness: 0.3 })
+        );
+        moonGroup.add(coreMoon);
+        const crescentRing = new THREE.Mesh(
+            new THREE.TorusGeometry(0.94, 0.1, 96, 160, Math.PI * 1.65),
+            new THREE.MeshStandardMaterial({ color: 0xffd68a, emissive: 0xcc8844, emissiveIntensity: 0.38, metalness: 0.65 })
+        );
+        crescentRing.rotation.x = 0.35;
+        crescentRing.rotation.z = 0.75;
+        crescentRing.rotation.y = 0.4;
+        moonGroup.add(crescentRing);
+        for (let i = 0; i < 10; i++) {
+            const spike = new THREE.Mesh(
+                new THREE.ConeGeometry(0.09, 0.48, 6),
+                new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xcc8844, emissiveIntensity: 0.32 })
+            );
+            const ang = (i / 10) * Math.PI * 2;
+            const rad = 1.13;
+            spike.position.set(Math.cos(ang) * rad, Math.sin(ang) * rad * 0.85, 0.2);
+            spike.rotation.z = ang;
+            moonGroup.add(spike);
+        }
+        moonGroup.position.set(-1.1, 2.4, -0.6);
+        scene.add(moonGroup);
+        
+        // Star Field
+        const starFieldGeo = new THREE.BufferGeometry();
+        const starTotal = 2400;
+        const starPos = new Float32Array(starTotal * 3);
+        const starColorsArr = new Float32Array(starTotal * 3);
+        for (let i = 0; i < starTotal; i++) {
+            starPos[i*3] = (Math.random() - 0.5) * 210;
+            starPos[i*3+1] = (Math.random() - 0.5) * 95;
+            starPos[i*3+2] = (Math.random() - 0.5) * 90 - 40;
+            const warmth = Math.random();
+            if (warmth < 0.7) {
+                starColorsArr[i*3] = 1.0; starColorsArr[i*3+1] = 0.85; starColorsArr[i*3+2] = 0.55;
+            } else if (warmth < 0.9) {
+                starColorsArr[i*3] = 1.0; starColorsArr[i*3+1] = 0.95; starColorsArr[i*3+2] = 0.75;
+            } else {
+                starColorsArr[i*3] = 0.9; starColorsArr[i*3+1] = 0.7; starColorsArr[i*3+2] = 1.0;
+            }
+        }
+        starFieldGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        starFieldGeo.setAttribute('color', new THREE.BufferAttribute(starColorsArr, 3));
+        const starPointsMat = new THREE.PointsMaterial({ size: 0.15, vertexColors: true, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+        const starPoints = new THREE.Points(starFieldGeo, starPointsMat);
+        scene.add(starPoints);
+        
+        // Floating Orbs with wavy motion
+        const orbCount = 280;
+        const orbList = [];
+        const orbContainer = new THREE.Group();
+        const orbPalette = [0xffcc99, 0xffdbaa, 0xffc88a, 0xffe0aa, 0xffddbb];
+        for (let i = 0; i < orbCount; i++) {
+            const sz = 0.065 + Math.random() * 0.09;
+            const orbMat = new THREE.MeshStandardMaterial({
+                color: orbPalette[Math.floor(Math.random() * orbPalette.length)],
+                emissive: 0xcc8844,
+                emissiveIntensity: 0.25 + Math.random() * 0.2,
+                metalness: 0.3,
+                roughness: 0.4
+            });
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(sz, 24, 24), orbMat);
+            const rad = 2.0 + Math.random() * 2.2;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            sphere.userData = { 
+                radius: rad, theta, phi, 
+                speedTheta: 0.002 + Math.random() * 0.007, 
+                speedPhi: 0.0015 + Math.random() * 0.005,
+                waveAmp: 0.1 + Math.random() * 0.2,
+                waveFreq: 0.8 + Math.random() * 1.2,
+                offset: Math.random() * Math.PI * 2
+            };
+            sphere.position.x = rad * Math.sin(phi) * Math.cos(theta);
+            sphere.position.y = rad * Math.sin(phi) * Math.sin(theta) + 1.3;
+            sphere.position.z = rad * Math.cos(phi);
+            orbContainer.add(sphere);
+            orbList.push(sphere);
+        }
+        scene.add(orbContainer);
+        
+        // Central Torus Knot
+        const knotGeo = new THREE.TorusKnotGeometry(1.1, 0.07, 340, 42, 3, 4);
+        const knotMat = new THREE.MeshStandardMaterial({ color: 0xffcf88, emissive: 0xcc8844, emissiveIntensity: 0.45, metalness: 0.8, roughness: 0.2 });
+        const centralKnot = new THREE.Mesh(knotGeo, knotMat);
+        centralKnot.position.y = 1.15;
+        scene.add(centralKnot);
+        
+        const outerRing = new THREE.Mesh(
+            new THREE.TorusGeometry(1.65, 0.045, 200, 260),
+            new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0xaa7744, emissiveIntensity: 0.35, metalness: 0.65 })
+        );
+        outerRing.position.y = 1.05;
+        scene.add(outerRing);
+        
+        // Aura Particles around center
+        const nameAuraGroup = new THREE.Group();
+        const auraCount = 520;
+        const auraParticles = [];
+        for (let i = 0; i < auraCount; i++) {
+            const part = new THREE.Mesh(
+                new THREE.SphereGeometry(0.034, 10, 10),
+                new THREE.MeshStandardMaterial({ color: 0xffddaa, emissive: 0xcc8844, emissiveIntensity: 0.28 })
+            );
+            const rad = 1.3 + Math.random() * 1.55;
+            const theta2 = Math.random() * Math.PI * 2;
+            const phi2 = Math.acos(2 * Math.random() - 1);
+            part.userData = { radius: rad, theta: theta2, phi: phi2, speed: 0.0018 + Math.random() * 0.006 };
+            part.position.x = rad * Math.sin(phi2) * Math.cos(theta2);
+            part.position.y = rad * Math.sin(phi2) * Math.sin(theta2) + 1.05;
+            part.position.z = rad * Math.cos(phi2);
+            nameAuraGroup.add(part);
+            auraParticles.push(part);
+        }
+        scene.add(nameAuraGroup);
+        
+        // Dust particles
+        const dustGeo = new THREE.BufferGeometry();
+        const dustCount = 1800;
+        const dustPositionsArr = new Float32Array(dustCount * 3);
+        for (let i = 0; i < dustCount; i++) {
+            dustPositionsArr[i*3] = (Math.random() - 0.5) * 15;
+            dustPositionsArr[i*3+1] = Math.random() * 5.5;
+            dustPositionsArr[i*3+2] = (Math.random() - 0.5) * 12 - 2;
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositionsArr, 3));
+        const dustMatPoints = new THREE.PointsMaterial({ color: 0xffccaa, size: 0.022, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
+        const dustSystem = new THREE.Points(dustGeo, dustMatPoints);
+        scene.add(dustSystem);
+        
+        // Floating Stars
+        const floatStarGroup = new THREE.Group();
+        const starObjects = [];
+        for (let i = 0; i < 50; i++) {
+            const starMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(0.082, 12, 12),
+                new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xcc8844, emissiveIntensity: 0.32 })
+            );
+            const radS = 2.3 + Math.random() * 2.7;
+            const angS = Math.random() * Math.PI * 2;
+            const yOff = (Math.random() - 0.5) * 3.2 + 1.2;
+            starMesh.position.x = Math.cos(angS) * radS;
+            starMesh.position.z = Math.sin(angS) * radS;
+            starMesh.position.y = yOff;
+            starMesh.userData = { angle: angS, radius: radS, speedRot: 0.004 + Math.random() * 0.009, yBase: yOff, floatSpeed: 0.0025 };
+            floatStarGroup.add(starMesh);
+            starObjects.push(starMesh);
+        }
+        scene.add(floatStarGroup);
+        
+        // Ground glow disc
+        const groundGlow = new THREE.Mesh(
+            new THREE.CircleGeometry(4.2, 24),
+            new THREE.MeshStandardMaterial({ color: 0x331d06, emissive: 0x442200, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+        );
+        groundGlow.rotation.x = -Math.PI / 2;
+        groundGlow.position.y = -0.8;
+        scene.add(groundGlow);
+        
+        // Animation Loop
+        let time = 0;
+        
+        function animateScene() {
+            time += 0.016;
+            
+            centralKnot.rotation.x += 0.007;
+            centralKnot.rotation.y += 0.01;
+            centralKnot.rotation.z += 0.005;
+            outerRing.rotation.x += 0.004;
+            outerRing.rotation.y += 0.009;
+            outerRing.rotation.z += 0.002;
+            
+            moonGroup.rotation.y = Math.sin(time * 0.45) * 0.12;
+            moonGroup.rotation.z = Math.sin(time * 0.3) * 0.08;
+            
+            orbList.forEach(orb => {
+                orb.userData.theta += orb.userData.speedTheta;
+                orb.userData.phi += orb.userData.speedPhi;
+                const r = orb.userData.radius;
+                const th = orb.userData.theta;
+                const ph = orb.userData.phi;
+                const waveY = Math.sin(time * orb.userData.waveFreq + orb.userData.offset) * orb.userData.waveAmp;
+                orb.position.x = r * Math.sin(ph) * Math.cos(th);
+                orb.position.z = r * Math.sin(ph) * Math.sin(th);
+                orb.position.y = r * Math.cos(ph) + 1.2 + waveY;
+            });
+            
+            auraParticles.forEach(p => {
+                p.userData.theta += p.userData.speed;
+                const radA = p.userData.radius;
+                const thA = p.userData.theta;
+                const phA = p.userData.phi;
+                p.position.x = radA * Math.sin(phA) * Math.cos(thA);
+                p.position.z = radA * Math.sin(phA) * Math.sin(thA);
+                p.position.y = radA * Math.cos(phA) + 1.05;
+            });
+            
+            starObjects.forEach(star => {
+                star.userData.angle += star.userData.speedRot;
+                const newX = Math.cos(star.userData.angle) * star.userData.radius;
+                const newZ = Math.sin(star.userData.angle) * star.userData.radius;
+                star.position.x = newX;
+                star.position.z = newZ;
+                star.position.y = star.userData.yBase + Math.sin(time * 1.3 + star.userData.radius) * 0.04;
+            });
+            
+            dynamicLight1.position.x = Math.sin(time * 0.7) * 2.5;
+            dynamicLight1.position.z = Math.cos(time * 0.6) * 2.6;
+            dynamicLight1.position.y = 1.4 + Math.sin(time * 1.2) * 1.0;
+            dynamicLight2.position.x = Math.sin(time * 0.85 + 1.2) * 2.3;
+            dynamicLight2.position.z = Math.cos(time * 0.75) * 2.4;
+            dynamicLight2.position.y = 1.2 + Math.cos(time * 1.3) * 1.0;
+            dynamicLight3.position.x = Math.sin(time * 1.05 + 2.0) * 2.1;
+            dynamicLight3.position.z = Math.cos(time * 0.95) * 2.2;
+            dynamicLight3.position.y = 1.0 + Math.sin(time * 1.5) * 1.1;
+            
+            starPoints.rotation.y += 0.0005;
+            starPoints.rotation.x += 0.0003;
+            dustSystem.rotation.y += 0.001;
+            
+            const targetY = 2.2 + Math.sin(time * 0.2) * 0.04;
+            camera.position.y += (targetY - camera.position.y) * 0.02;
+            controls.target.set(0, 1.6, 0);
+            controls.update();
+            
+            effectComposer.render();
+            requestAnimationFrame(animateScene);
+        }
+        
+        animateScene();
+        
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            effectComposer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Celebratory spark burst
+        setTimeout(() => {
+            const burstGroup = new THREE.Group();
+            for (let i = 0; i < 90; i++) {
+                const spark = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.045, 8, 8),
+                    new THREE.MeshStandardMaterial({ color: 0xffcc88, emissive: 0xcc8844, emissiveIntensity: 0.6 })
+                );
+                spark.position.set((Math.random() - 0.5) * 2.5, Math.random() * 2.5 + 0.8, (Math.random() - 0.5) * 2.2);
+                burstGroup.add(spark);
+                setTimeout(() => burstGroup.remove(spark), 1400);
+            }
+            scene.add(burstGroup);
+            setTimeout(() => scene.remove(burstGroup), 1500);
+        }, 500);
+        
+        console.log('✨ Eid Mubarak from Abdur Rehman — Enhanced & Mobile Optimized ✨');
+    </script>
+</body>
+</html>

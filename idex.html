@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Eid Mubarak | Abdur Rehman | 3D Celebration</title>
+    <style>
+        /* Professional Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Times New Roman', serif;
+            background: #03030f;
+        }
+
+        /* Canvas takes full screen with depth */
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Main Overlay - Professional, elegant, responsive */
+        .hero-overlay {
+            position: absolute;
+            bottom: 8%;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+            padding: 0 20px;
+            animation: fadeSlideUp 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        /* Main Eid Heading */
+        .eid-title {
+            font-size: clamp(2.2rem, 8vw, 4.8rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #f9e0a0, #f7c56e, #ffeaac, #e6b450);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 0.02em;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+        }
+
+        /* "from Abdur Rehman" stylish */
+        .from-name {
+            font-size: clamp(1.2rem, 4.5vw, 2rem);
+            font-weight: 500;
+            color: #ffefcf;
+            letter-spacing: 1px;
+            background: linear-gradient(120deg, #fceabb, #f9d98e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 12px rgba(255, 200, 100, 0.5);
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .from-name span {
+            font-size: 1.3em;
+            background: none;
+            color: #ffdd99;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            text-shadow: 0 0 8px rgba(0,0,0,0.3);
+        }
+
+        .name-highlight {
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffefb9, #ffda88);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-size: clamp(1.4rem, 5vw, 2.3rem);
+            letter-spacing: 1px;
+        }
+
+        /* Urdu Text - Professional Nastaliq inspired */
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', 'Traditional Arabic', 'Times New Roman', serif;
+            font-size: clamp(1.4rem, 5vw, 2.2rem);
+            color: #ffefcf;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            display: inline-block;
+            padding: 8px 28px;
+            border-radius: 60px;
+            margin-top: 12px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 215, 150, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Blessing subtext */
+        .blessing-message {
+            font-size: clamp(0.8rem, 3.5vw, 1rem);
+            color: #fff0cf;
+            margin-top: 18px;
+            font-weight: 400;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Floating Eid Ornaments - Responsive */
+        .floating-icon {
+            position: absolute;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(0 0 8px rgba(255,215,0,0.5));
+            animation: floatSoft 8s ease-in-out infinite;
+        }
+
+        .icon-1 { top: 12%; left: 3%; }
+        .icon-2 { bottom: 15%; right: 4%; animation-duration: 11s; }
+        .icon-3 { top: 25%; right: 6%; animation-duration: 9s; opacity: 0.5; }
+        .icon-4 { bottom: 20%; left: 5%; animation-duration: 12s; }
+
+        /* Gradient overlay for better text readability */
+        .gradient-mask {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35%;
+            background: linear-gradient(to top, rgba(3, 3, 15, 0.7), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Animations */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatSoft {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Mobile optimization - no overflow, smooth */
+        @media (max-width: 640px) {
+            .hero-overlay {
+                bottom: 5%;
+            }
+            .urdu-text {
+                padding: 5px 20px;
+                backdrop-filter: blur(10px);
+            }
+            .blessing-message {
+                backdrop-filter: blur(6px);
+                margin-top: 12px;
+            }
+            .floating-icon {
+                opacity: 0.45;
+            }
+        }
+
+        /* Landscape orientation fix */
+        @media (max-width: 850px) and (orientation: landscape) {
+            .hero-overlay {
+                bottom: 2%;
+            }
+            .urdu-text {
+                padding: 4px 18px;
+                font-size: 1.2rem;
+            }
+            .blessing-message {
+                margin-top: 6px;
+            }
+        }
+
+        /* Hide default scroll, professional touch */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    
+    <!-- Import Google Fonts + Urdu Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Floating decorative icons -->
+    <div class="floating-icon icon-1">🌙✨</div>
+    <div class="floating-icon icon-2">⭐☪️</div>
+    <div class="floating-icon icon-3">🕌🌟</div>
+    <div class="floating-icon icon-4">🏮🌙</div>
+    
+    <div class="gradient-mask"></div>
+    
+    <div class="hero-overlay">
+        <div class="eid-title">Eid Mubarak</div>
+        <div class="from-name">
+            <span>✨ from</span>
+            <span class="name-highlight">Abdur Rehman</span>
+            <span>✨</span>
+        </div>
+        <div class="urdu-text">عید مبارک — عبدالرحمن کی طرف سے</div>
+        <div class="blessing-message">🕊️ May this Eid bring endless joy, peace, and divine blessings 🕊️</div>
+    </div>
+
+    <!-- Three.js Module -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        
+        // --- Setup Scene, Camera, Renderer (Professional High-End) ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x03030f);
+        scene.fog = new THREE.FogExp2(0x03030f, 0.005); // lighter fog
+        
+        // Camera: perfect perspective for both mobile and desktop
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2.2, 11);
+        camera.lookAt(0, 1.5, 0);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        renderer.toneMappingExposure = 1.15; // reduced exposure for softer look
+        document.body.appendChild(renderer.domElement);
+        
+        // --- Bloom Effect - Reduced intensity for softer lighting ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.85, 0.3, 0.7);
+        bloomPass.threshold = 0.12;
+        bloomPass.strength = 0.55;   // softer bloom
+        bloomPass.radius = 0.4;
+        const effectComposer = new EffectComposer(renderer);
+        effectComposer.addPass(renderScene);
+        effectComposer.addPass(bloomPass);
+        
+        // --- Controls: Gentle user interaction ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+        controls.enablePan = false;
+        controls.zoomSpeed = 0.5;
+        controls.rotateSpeed = 0.7;
+        controls.target.set(0, 1.6, 0);
+        
+        // --- Lighting: Softer, lighter, elegant ---
+        // Ambient - reduced intensity
+        const ambient = new THREE.AmbientLight(0x332011, 0.45);
+        scene.add(ambient);
+        
+        // Key light (golden) - softer
+        const keyLight = new THREE.DirectionalLight(0xffdd99, 0.9);
+        keyLight.position.set(3, 5, 2.5);
+        scene.add(keyLight);
+        
+        // Fill warm - lower intensity
+        const fillWarm = new THREE.PointLight(0xe6b85e, 0.5);
+        fillWarm.position.set(1, 1.5, 2);
+        scene.add(fillWarm);
+        
+        // Back rim light - subtle
+        const rimLight = new THREE.PointLight(0xffaa66, 0.6);
+        rimLight.position.set(-2, 2.5, -3);
+        scene.add(rimLight);
+        
+        // Colorful dynamic orbs - reduced intensity
+        const dynamicLight1 = new THREE.PointLight(0xff88aa, 0.4);
+        const dynamicLight2 = new THREE.PointLight(0x88aaff, 0.4);
+        const dynamicLight3 = new THREE.PointLight(0xffaa66, 0.45);
+        scene.add(dynamicLight1);
+        scene.add(dynamicLight2);
+        scene.add(dynamicLight3);
+        
+        // --- CENTERPIECE: Elegant Crescent Moon with softer emissive ---
+        const moonGroup = new THREE.Group();
+        const coreMoon = new THREE.Mesh(
+            new THREE.SphereGeometry(0.72, 96, 96),
+            new THREE.MeshStandardMaterial({ color: 0xffe4a3, emissive: 0xaa7733, emissiveIntensity: 0.25, metalness: 0.6, roughness: 0.3 })
+        );
+        moonGroup.add(coreMoon);
+        
+        const crescentRing = new THREE.Mesh(
+            new THREE.TorusGeometry(0.92, 0.1, 96, 160, Math.PI * 1.65),
+            new THREE.MeshStandardMaterial({ color: 0xffd68a, emissive: 0xcc8844, emissiveIntensity: 0.35, metalness: 0.65 })
+        );
+        crescentRing.rotation.x = 0.35;
+        crescentRing.rotation.z = 0.75;
+        crescentRing.rotation.y = 0.4;
+        moonGroup.add(crescentRing);
+        
+        // Star accents around moon
+        for (let i = 0; i < 10; i++) {
+            const spike = new THREE.Mesh(
+                new THREE.ConeGeometry(0.09, 0.48, 6),
+                new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xcc8844, emissiveIntensity: 0.3 })
+            );
+            const ang = (i / 10) * Math.PI * 2;
+            const rad = 1.12;
+            spike.position.set(Math.cos(ang) * rad, Math.sin(ang) * rad * 0.85, 0.2);
+            spike.rotation.z = ang;
+            moonGroup.add(spike);
+        }
+        moonGroup.position.set(-1.1, 2.4, -0.6);
+        scene.add(moonGroup);
+        
+        // --- Majestic Star Field (deep space) ---
+        const starFieldGeo = new THREE.BufferGeometry();
+        const starTotal = 2200;
+        const starPos = new Float32Array(starTotal * 3);
+        const starColorsArr = new Float32Array(starTotal * 3);
+        for (let i = 0; i < starTotal; i++) {
+            starPos[i*3] = (Math.random() - 0.5) * 200;
+            starPos[i*3+1] = (Math.random() - 0.5) * 90;
+            starPos[i*3+2] = (Math.random() - 0.5) * 85 - 35;
+            const warmth = Math.random();
+            if (warmth < 0.65) {
+                starColorsArr[i*3] = 1.0;
+                starColorsArr[i*3+1] = 0.85;
+                starColorsArr[i*3+2] = 0.55;
+            } else if (warmth < 0.85) {
+                starColorsArr[i*3] = 1.0;
+                starColorsArr[i*3+1] = 0.95;
+                starColorsArr[i*3+2] = 0.75;
+            } else {
+                starColorsArr[i*3] = 0.9;
+                starColorsArr[i*3+1] = 0.7;
+                starColorsArr[i*3+2] = 1.0;
+            }
+        }
+        starFieldGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        starFieldGeo.setAttribute('color', new THREE.BufferAttribute(starColorsArr, 3));
+        const starPointsMat = new THREE.PointsMaterial({ size: 0.14, vertexColors: true, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending });
+        const starPoints = new THREE.Points(starFieldGeo, starPointsMat);
+        scene.add(starPoints);
+        
+        // --- Floating Orbs (particle system) with softer colors ---
+        const orbCount = 260;
+        const orbList = [];
+        const orbContainer = new THREE.Group();
+        const orbPalette = [0xffcc99, 0xffdbaa, 0xffc88a, 0xffe0aa, 0xffddbb];
+        for (let i = 0; i < orbCount; i++) {
+            const sz = 0.06 + Math.random() * 0.08;
+            const orbMat = new THREE.MeshStandardMaterial({
+                color: orbPalette[Math.floor(Math.random() * orbPalette.length)],
+                emissive: 0xcc8844,
+                emissiveIntensity: 0.2 + Math.random() * 0.2,
+                metalness: 0.3,
+                roughness: 0.4
+            });
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(sz, 24, 24), orbMat);
+            const rad = 2.0 + Math.random() * 2.1;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            sphere.userData = { radius: rad, theta, phi, speedTheta: 0.002 + Math.random() * 0.006, speedPhi: 0.0015 + Math.random() * 0.004 };
+            sphere.position.x = rad * Math.sin(phi) * Math.cos(theta);
+            sphere.position.y = rad * Math.sin(phi) * Math.sin(theta) + 1.3;
+            sphere.position.z = rad * Math.cos(phi);
+            orbContainer.add(sphere);
+            orbList.push(sphere);
+        }
+        scene.add(orbContainer);
+        
+        // --- Central Elegant Torus Knot (softer emissive) ---
+        const knotGeo = new THREE.TorusKnotGeometry(1.08, 0.065, 320, 40, 3, 4);
+        const knotMat = new THREE.MeshStandardMaterial({ color: 0xffcf88, emissive: 0xcc8844, emissiveIntensity: 0.4, metalness: 0.75, roughness: 0.25 });
+        const centralKnot = new THREE.Mesh(knotGeo, knotMat);
+        centralKnot.position.y = 1.15;
+        scene.add(centralKnot);
+        
+        const outerRing = new THREE.Mesh(
+            new THREE.TorusGeometry(1.62, 0.04, 180, 240),
+            new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0xaa7744, emissiveIntensity: 0.3, metalness: 0.6 })
+        );
+        outerRing.position.y = 1.05;
+        scene.add(outerRing);
+        
+        // --- Personalized "Abdur Rehman" Glow Particles (softer aura) ---
+        const nameAuraGroup = new THREE.Group();
+        const auraCount = 480;
+        const auraParticles = [];
+        for (let i = 0; i < auraCount; i++) {
+            const part = new THREE.Mesh(
+                new THREE.SphereGeometry(0.032, 10, 10),
+                new THREE.MeshStandardMaterial({ color: 0xffddaa, emissive: 0xcc8844, emissiveIntensity: 0.25 })
+            );
+            const rad = 1.25 + Math.random() * 1.5;
+            const theta2 = Math.random() * Math.PI * 2;
+            const phi2 = Math.acos(2 * Math.random() - 1);
+            part.userData = { radius: rad, theta: theta2, phi: phi2, speed: 0.0015 + Math.random() * 0.005 };
+            part.position.x = rad * Math.sin(phi2) * Math.cos(theta2);
+            part.position.y = rad * Math.sin(phi2) * Math.sin(theta2) + 1.05;
+            part.position.z = rad * Math.cos(phi2);
+            nameAuraGroup.add(part);
+            auraParticles.push(part);
+        }
+        scene.add(nameAuraGroup);
+        
+        // --- Shimmer Dust (ethereal) - reduced opacity ---
+        const dustGeo = new THREE.BufferGeometry();
+        const dustCount = 1600;
+        const dustPositionsArr = new Float32Array(dustCount * 3);
+        for (let i = 0; i < dustCount; i++) {
+            dustPositionsArr[i*3] = (Math.random() - 0.5) * 14;
+            dustPositionsArr[i*3+1] = Math.random() * 5.0;
+            dustPositionsArr[i*3+2] = (Math.random() - 0.5) * 10 - 2;
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositionsArr, 3));
+        const dustMatPoints = new THREE.PointsMaterial({ color: 0xffccaa, size: 0.02, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending });
+        const dustSystem = new THREE.Points(dustGeo, dustMatPoints);
+        scene.add(dustSystem);
+        
+        // --- Floating Stars (3D objects) that rotate - softer glow ---
+        const floatStarGroup = new THREE.Group();
+        const starObjects = [];
+        for (let i = 0; i < 44; i++) {
+            const starMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(0.078, 12, 12),
+                new THREE.MeshStandardMaterial({ color: 0xffeebb, emissive: 0xcc8844, emissiveIntensity: 0.3 })
+            );
+            const radS = 2.2 + Math.random() * 2.5;
+            const angS = Math.random() * Math.PI * 2;
+            const yOff = (Math.random() - 0.5) * 3 + 1.2;
+            starMesh.position.x = Math.cos(angS) * radS;
+            starMesh.position.z = Math.sin(angS) * radS;
+            starMesh.position.y = yOff;
+            starMesh.userData = { angle: angS, radius: radS, speedRot: 0.003 + Math.random() * 0.008, yBase: yOff, floatSpeed: 0.002 };
+            floatStarGroup.add(starMesh);
+            starObjects.push(starMesh);
+        }
+        scene.add(floatStarGroup);
+        
+        // --- subtle ground glow disc (reduced opacity) ---
+        const groundGlow = new THREE.Mesh(
+            new THREE.CircleGeometry(3.8, 24),
+            new THREE.MeshStandardMaterial({ color: 0x331d06, emissive: 0x442200, transparent: true, opacity: 0.2, side: THREE.DoubleSide })
+        );
+        groundGlow.rotation.x = -Math.PI / 2;
+        groundGlow.position.y = -0.75;
+        scene.add(groundGlow);
+        
+        // --- Animation Loop (continuous, professional, softer) ---
+        let clock = new THREE.Clock();
+        
+        function animateScene() {
+            const delta = clock.getDelta();
+            const elapsedTime = performance.now() / 1000;
+            
+            // Rotate central knot and ring
+            centralKnot.rotation.x += 0.006;
+            centralKnot.rotation.y += 0.009;
+            centralKnot.rotation.z += 0.004;
+            outerRing.rotation.x += 0.003;
+            outerRing.rotation.y += 0.007;
+            
+            // Gentle moon floating
+            moonGroup.rotation.y = Math.sin(elapsedTime * 0.4) * 0.1;
+            moonGroup.rotation.z = Math.sin(elapsedTime * 0.28) * 0.07;
+            
+            // Animate floating orbs
+            orbList.forEach(orb => {
+                orb.userData.theta += orb.userData.speedTheta;
+                orb.userData.phi += orb.userData.speedPhi;
+                const r = orb.userData.radius;
+                const th = orb.userData.theta;
+                const ph = orb.userData.phi;
+                orb.position.x = r * Math.sin(ph) * Math.cos(th);
+                orb.position.z = r * Math.sin(ph) * Math.sin(th);
+                orb.position.y = r * Math.cos(ph) + 1.2;
+            });
+            
+            // Rotate aura particles
+            auraParticles.forEach(p => {
+                p.userData.theta += p.userData.speed;
+                const radA = p.userData.radius;
+                const thA = p.userData.theta;
+                const phA = p.userData.phi;
+                p.position.x = radA * Math.sin(phA) * Math.cos(thA);
+                p.position.z = radA * Math.sin(phA) * Math.sin(thA);
+                p.position.y = radA * Math.cos(phA) + 1.05;
+            });
+            
+            // Animate floating stars revolution
+            starObjects.forEach(star => {
+                star.userData.angle += star.userData.speedRot;
+                const newX = Math.cos(star.userData.angle) * star.userData.radius;
+                const newZ = Math.sin(star.userData.angle) * star.userData.radius;
+                star.position.x = newX;
+                star.position.z = newZ;
+                star.position.y += Math.sin(elapsedTime * 1.0 + star.userData.radius) * 0.002;
+            });
+            
+            // Dynamic colored lights - softer movement
+            dynamicLight1.position.x = Math.sin(elapsedTime * 0.6) * 2.4;
+            dynamicLight1.position.z = Math.cos(elapsedTime * 0.5) * 2.5;
+            dynamicLight1.position.y = 1.5 + Math.sin(elapsedTime * 1.0) * 0.9;
+            dynamicLight2.position.x = Math.sin(elapsedTime * 0.8 + 1.5) * 2.2;
+            dynamicLight2.position.z = Math.cos(elapsedTime * 0.7) * 2.3;
+            dynamicLight2.position.y = 1.3 + Math.cos(elapsedTime * 1.1) * 0.9;
+            dynamicLight3.position.x = Math.sin(elapsedTime * 1.0 + 2.0) * 2.0;
+            dynamicLight3.position.z = Math.cos(elapsedTime * 0.9) * 2.1;
+            dynamicLight3.position.y = 1.1 + Math.sin(elapsedTime * 1.3) * 1.0;
+            
+            // Rotate star field slowly
+            starPoints.rotation.y += 0.0004;
+            starPoints.rotation.x += 0.0002;
+            dustSystem.rotation.y += 0.0008;
+            
+            // Gentle camera breathing
+            const targetY = 2.18 + Math.sin(elapsedTime * 0.18) * 0.03;
+            camera.position.y += (targetY - camera.position.y) * 0.02;
+            controls.target.set(0, 1.55, 0);
+            controls.update();
+            
+            // Render with bloom
+            effectComposer.render();
+            requestAnimationFrame(animateScene);
+        }
+        
+        animateScene();
+        
+        // --- Responsive Resize Handler ---
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            effectComposer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // Initial sparkle celebration (softer burst)
+        setTimeout(() => {
+            const burstGroup = new THREE.Group();
+            for (let i = 0; i < 70; i++) {
+                const spark = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.04, 8, 8),
+                    new THREE.MeshStandardMaterial({ color: 0xffcc88, emissive: 0xcc8844, emissiveIntensity: 0.5 })
+                );
+                spark.position.set((Math.random() - 0.5) * 2.0, Math.random() * 2.2 + 0.7, (Math.random() - 0.5) * 1.8);
+                burstGroup.add(spark);
+                setTimeout(() => burstGroup.remove(spark), 1200);
+            }
+            scene.add(burstGroup);
+            setTimeout(() => scene.remove(burstGroup), 1300);
+        }, 400);
+        
+        console.log('✨ Eid Mubarak from Abdur Rehman — Softer Elegant Lighting ✨');
+    </script>
+</body>
+</html>

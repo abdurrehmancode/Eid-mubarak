@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Eid Mubarak | Abdur Rehman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 30% 40%, #0a1f3e, #020c1a);
+      background-color: #071833;
+      font-family: 'Poppins', 'Segoe UI', 'Noto Nastaliq Urdu', 'Amiri', serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Canvas for stars and fireworks */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Lantern container */
+    .lanterns-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Elegant lantern with glow pulse */
+    .lantern {
+      position: absolute;
+      width: 70px;
+      height: 90px;
+      background: linear-gradient(145deg, #ffb347, #ff7e05);
+      border-radius: 50% 50% 45% 45% / 60% 60% 35% 35%;
+      box-shadow: 0 0 18px 6px rgba(255, 120, 0, 0.6), inset 0 1px 4px rgba(255, 245, 200, 0.8);
+      transition: transform 0.2s ease;
+      cursor: default;
+      animation: floatSway 3s infinite alternate ease-in-out, glowPulse 2s infinite alternate;
+    }
+
+    .lantern::before {
+      content: "";
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 18px;
+      background: radial-gradient(circle, #e6c87a, #c49a2b);
+      border-radius: 40% 40% 30% 30%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .lantern::after {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      width: 3px;
+      height: 14px;
+      background: #e7b42c;
+      transform: translateX(-50%);
+    }
+
+    .lantern .tassel {
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 16px;
+      background: radial-gradient(ellipse at 30% 40%, #e0a234, #b5570a);
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .lantern .tassel::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 4px;
+      width: 5px;
+      height: 12px;
+      background: #d68c2c;
+      border-radius: 2px;
+    }
+
+    @keyframes floatSway {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-35px) rotate(3deg); }
+    }
+
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 12px 4px rgba(255, 120, 0, 0.5), inset 0 1px 4px rgba(255, 245, 200, 0.6); }
+      100% { box-shadow: 0 0 28px 12px rgba(255, 160, 0, 0.9), inset 0 2px 8px rgba(255, 255, 200, 1); }
+    }
+
+    /* Main greeting card with floating animation */
+    .greeting-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+      text-align: center;
+      background: rgba(8, 18, 36, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 48px;
+      padding: 2rem 2.5rem;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 220, 100, 0.2) inset;
+      width: 85%;
+      max-width: 780px;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      animation: cardFloat 4s infinite ease-in-out;
+    }
+
+    .greeting-card:hover {
+      backdrop-filter: blur(16px);
+      box-shadow: 0 35px 55px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 210, 80, 0.3) inset;
+      transform: translate(-50%, -50%) scale(1.02);
+    }
+
+    @keyframes cardFloat {
+      0% { transform: translate(-50%, -50%) translateY(0px); }
+      50% { transform: translate(-50%, -50%) translateY(-6px); }
+      100% { transform: translate(-50%, -50%) translateY(0px); }
+    }
+
+    /* Emoji decorations with bounce and glow */
+    .emoji-top, .emoji-bottom {
+      font-size: 1.9rem;
+      letter-spacing: 12px;
+      margin-bottom: 12px;
+      opacity: 0.95;
+      animation: emojiGlide 2.5s infinite alternate;
+      display: inline-block;
+      width: 100%;
+      text-shadow: 0 0 5px gold;
+    }
+    .emoji-bottom {
+      margin-top: 12px;
+      margin-bottom: 0;
+      letter-spacing: 10px;
+      animation-delay: 0.5s;
+    }
+    @keyframes emojiGlide {
+      0% { transform: translateY(0px) scale(1); text-shadow: 0 0 2px #ffcc66; }
+      100% { transform: translateY(-8px) scale(1.05); text-shadow: 0 0 15px #ffaa33, 0 0 8px #ffdd88; }
+    }
+
+    /* English text with enhanced shimmer */
+    .eid-title {
+      font-size: clamp(2rem, 7vw, 4.2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFE6A3, #F9B42C, #FFD966, #E5A022, #FFB347);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      animation: shimmerFlow 5s linear infinite, gentleGlow 2s ease-in-out infinite alternate;
+      margin-bottom: 0.75rem;
+    }
+
+    @keyframes shimmerFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    /* Urdu text with premium Nastaliq */
+    .urdu-eid {
+      font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaliq', 'Amiri', serif;
+      font-size: clamp(2rem, 6.5vw, 3.5rem);
+      font-weight: 600;
+      background: linear-gradient(135deg, #FFF5D9, #FEDB7A, #FFD166, #F4C542, #FFE0A3);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: urduShimmer 4s linear infinite;
+      direction: rtl;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(255, 200, 80, 0.5);
+      line-height: 1.4;
+      margin-top: 0.25rem;
+    }
+
+    @keyframes urduShimmer {
+      0% { background-position: -150% 0; text-shadow: 0 0 4px #ffbe5e; }
+      50% { background-position: 0% 0; text-shadow: 0 0 16px #ffbc44; }
+      100% { background-position: 150% 0; text-shadow: 0 0 4px #ffb347; }
+    }
+
+    @keyframes gentleGlow {
+      0% { text-shadow: 0 0 5px #fbbf24, 0 0 8px #f59e0b; }
+      100% { text-shadow: 0 0 20px #ffd966, 0 0 28px #f5b042; }
+    }
+
+    .divider {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #f3b33d, #ffd966, #f3b33d, transparent);
+      margin: 16px auto 0;
+      border-radius: 4px;
+      animation: dividerPulse 2s infinite alternate;
+    }
+
+    @keyframes dividerPulse {
+      0% { width: 80px; opacity: 0.5; }
+      100% { width: 120px; opacity: 1; }
+    }
+
+    @media (max-width: 640px) {
+      .greeting-card {
+        padding: 1.5rem 1.2rem;
+        width: 90%;
+      }
+      .lantern {
+        width: 50px;
+        height: 65px;
+      }
+      .lantern::before {
+        width: 18px;
+        height: 13px;
+        top: -12px;
+      }
+      .urdu-eid {
+        font-size: clamp(1.5rem, 5vw, 2.5rem);
+      }
+      .emoji-top, .emoji-bottom {
+        font-size: 1.3rem;
+        letter-spacing: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="lanterns-container" id="lanterns-container"></div>
+
+  <div class="greeting-card">
+    <div class="emoji-top">🌙✨🕌✨🌟☪️</div>
+    <h1 class="eid-title">Eid Mubarak From Abdur Rehman</h1>
+    <div class="urdu-eid">عید مبارک - عبد الرحمن کی طرف سے</div>
+    <div class="emoji-bottom">🎆🌟🎇🕋✨🌙</div>
+    <div class="divider"></div>
+  </div>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('bg-canvas');
+      let ctx = canvas.getContext('2d');
+      let width, height;
+      let stars = [];
+      let particles = [];
+      let animationId = null;
+      let fireworkInterval = null;
+      let shootingStars = [];
+
+      const STAR_COUNT = 260;
+      const LANTERN_COUNT = 8;
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initStars();
+      }
+
+      function initStars() {
+        stars = [];
+        for (let i = 0; i < STAR_COUNT; i++) {
+          stars.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 2.4 + 1.2,
+            alpha: Math.random() * 0.5 + 0.3,
+            twinkleSpeed: 0.004 + Math.random() * 0.018,
+            phase: Math.random() * Math.PI * 2,
+            initialAlpha: Math.random() * 0.5 + 0.3
+          });
+        }
+      }
+
+      function updateStars() {
+        for (let s of stars) {
+          s.phase += s.twinkleSpeed;
+          s.alpha = s.initialAlpha + Math.sin(s.phase) * 0.35;
+        }
+      }
+
+      function drawStars() {
+        for (let s of stars) {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 245, 210, ${Math.min(1, Math.max(0.2, s.alpha))})`;
+          ctx.fill();
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = `rgba(255, 200, 100, ${s.alpha * 0.7})`;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      // Shooting star effect (rare but elegant)
+      function addShootingStar() {
+        if (Math.random() < 0.02) { // 2% chance per frame
+          shootingStars.push({
+            x: Math.random() * width,
+            y: Math.random() * height * 0.3,
+            vx: (Math.random() - 0.5) * 8 + 4,
+            vy: Math.random() * 3 + 2,
+            life: 1,
+            length: 12
+          });
+        }
+        for (let i = shootingStars.length-1; i >= 0; i--) {
+          let s = shootingStars[i];
+          s.x += s.vx;
+          s.y += s.vy;
+          s.life -= 0.02;
+          if (s.x > width || s.y > height || s.life <= 0) {
+            shootingStars.splice(i,1);
+            continue;
+          }
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(s.x - s.vx * s.length, s.y - s.vy * s.length);
+          ctx.strokeStyle = `rgba(255, 240, 170, ${s.life * 0.8})`;
+          ctx.lineWidth = 2;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = "#ffcc88";
+          ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      // Firework particle class
+      class FireParticle {
+        constructor(x, y, color, vx, vy, size, alpha = 1, gravity = 0.08, drag = 0.98) {
+          this.x = x; this.y = y; this.color = color; this.vx = vx; this.vy = vy;
+          this.size = size; this.alpha = alpha; this.gravity = gravity; this.drag = drag;
+          this.decay = 0.015; this.flicker = Math.random() * 0.5 + 0.5;
+        }
+        update() {
+          this.vx *= this.drag; this.vy *= this.drag; this.vy += this.gravity;
+          this.x += this.vx; this.y += this.vy; this.alpha -= this.decay;
+          return this.alpha > 0.02;
+        }
+        draw(ctx) {
+          ctx.save();
+          ctx.globalAlpha = this.alpha * this.flicker;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = this.color;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      function createExplosion(x, y, baseHue = null) {
+        const hue = baseHue !== null ? baseHue : Math.random() * 360;
+        const palette = [
+          `hsl(${hue}, 100%, 60%)`, `hsl(${(hue+30)%360}, 100%, 65%)`,
+          `hsl(${(hue+60)%360}, 100%, 55%)`, `hsl(${(hue+90)%360}, 100%, 70%)`
+        ];
+        const count = Math.floor(Math.random() * 36) + 30;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 6 + 2;
+          const vx = Math.cos(angle) * speed * (Math.random() * 1.2);
+          const vy = Math.sin(angle) * speed * (Math.random() * 1.2);
+          const size = Math.random() * 3.8 + 1.8;
+          const color = palette[Math.floor(Math.random() * palette.length)];
+          particles.push(new FireParticle(x, y, color, vx, vy, size, 1, 0.07, 0.98));
+        }
+        for (let i = 0; i < 15; i++) {
+          const angle2 = Math.random() * Math.PI * 2;
+          const speed2 = Math.random() * 4 + 1;
+          const vx2 = Math.cos(angle2) * speed2;
+          const vy2 = Math.sin(angle2) * speed2;
+          particles.push(new FireParticle(x + (Math.random()-0.5)*35, y + (Math.random()-0.5)*35, `hsl(${hue}, 90%, 70%)`, vx2, vy2, Math.random()*2.5+1, 0.8, 0.05, 0.97));
+        }
+      }
+
+      function launchFirework() {
+        if (!width || !height) return;
+        const x = Math.random() * (width - 100) + 50;
+        const y = Math.random() * (height * 0.55) + (height * 0.15);
+        const hue = Math.random() * 360;
+        createExplosion(x, y, hue);
+        if (Math.random() > 0.7) {
+          setTimeout(() => {
+            if (particles.length < 550) createExplosion(x + (Math.random()-0.5)*50, y + (Math.random()-0.5)*45, (hue+45)%360);
+          }, 80);
+        }
+      }
+
+      function initialFireworksSalute() {
+        for (let i = 0; i < 22; i++) {
+          setTimeout(() => launchFirework(), i * 130);
+        }
+        setTimeout(() => {
+          for (let i = 0; i < 14; i++) {
+            setTimeout(() => launchFirework(), i * 110);
+          }
+        }, 1200);
+      }
+
+      function startPeriodicFireworks() {
+        if (fireworkInterval) clearInterval(fireworkInterval);
+        fireworkInterval = setInterval(() => {
+          if (particles.length < 500) {
+            launchFirework();
+            if (Math.random() > 0.75) setTimeout(() => launchFirework(), 120);
+          }
+        }, 1400);
+      }
+
+      function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+        const grad = ctx.createLinearGradient(0, 0, 0, height);
+        grad.addColorStop(0, '#071833'); grad.addColorStop(1, '#030c1a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+        updateStars();
+        drawStars();
+        addShootingStar();
+        for (let i = particles.length-1; i >= 0; i--) {
+          if (particles[i].update()) particles[i].draw(ctx);
+          else particles.splice(i,1);
+        }
+        animationId = requestAnimationFrame(animate);
+      }
+
+      const lanternContainer = document.getElementById('lanterns-container');
+      function createLanterns() {
+        lanternContainer.innerHTML = '';
+        for (let i = 0; i < LANTERN_COUNT; i++) {
+          const lantern = document.createElement('div');
+          lantern.classList.add('lantern');
+          const leftPos = Math.random() * 80 + 10;
+          const bottomPos = Math.random() * 70 + 5;
+          const sizeScale = 0.7 + Math.random() * 0.8;
+          const widthVal = 65 * sizeScale;
+          const heightVal = 85 * sizeScale;
+          lantern.style.width = `${widthVal}px`;
+          lantern.style.height = `${heightVal}px`;
+          lantern.style.left = `${leftPos}%`;
+          lantern.style.bottom = `${bottomPos}%`;
+          const duration = 3 + Math.random() * 3.5;
+          const delay = Math.random() * 2;
+          lantern.style.animation = `floatSway ${duration}s infinite alternate ease-in-out, glowPulse ${1.5 + Math.random() * 1}s infinite alternate`;
+          lantern.style.animationDelay = `${delay}s, ${delay}s`;
+          const rotate = (Math.random() - 0.5) * 7;
+          lantern.style.transform = `rotate(${rotate}deg)`;
+          const tassel = document.createElement('div');
+          tassel.classList.add('tassel');
+          lantern.appendChild(tassel);
+          lanternContainer.appendChild(lantern);
+        }
+      }
+
+      function handleVisibility() {
+        if (document.hidden) {
+          if (animationId) cancelAnimationFrame(animationId);
+          if (fireworkInterval) clearInterval(fireworkInterval);
+        } else {
+          if (!animationId) animate();
+          if (!fireworkInterval) startPeriodicFireworks();
+          resizeCanvas();
+        }
+      }
+
+      window.addEventListener('load', () => {
+        resizeCanvas();
+        createLanterns();
+        animate();
+        initialFireworksSalute();
+        startPeriodicFireworks();
+        window.addEventListener('resize', () => { resizeCanvas(); createLanterns(); });
+        document.addEventListener('visibilitychange', handleVisibility);
+      });
+      window.addEventListener('beforeunload', () => {
+        if (animationId) cancelAnimationFrame(animationId);
+        if (fireworkInterval) clearInterval(fireworkInterval);
+      });
+    })();
+  </script>
+</body>
+</html>
